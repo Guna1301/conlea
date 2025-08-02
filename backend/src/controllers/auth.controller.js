@@ -1,3 +1,4 @@
+import { upsertStreamUser } from "../lib/stream.js";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 
@@ -32,7 +33,18 @@ export const signup = async (req,res)=> {
             profilePic: randomAvatar
         })
 
-        // TODO: create a stream user
+        // Upsert user in Stream
+        try {
+            await upsertStreamUser({
+                id:newUser._id.toString(),
+                name: newUser.fullName,
+                image: newUser.profilePic || ''
+            })
+            console.log(`Stream user upserted successfully for user: ${newUser.fullName}`);
+        } catch (error) {
+            console.error("Error upserting Stream user:", error);
+        }
+
 
         const token = jwt.sign(
             {userId:newUser._id},
@@ -55,10 +67,50 @@ export const signup = async (req,res)=> {
     }
 }
 
+
 export const login = async (req,res)=> {
-    res.send('Login Route')
+    try {
+        const {email, password} = req.body;
+        if(!email || !password) {
+            return res.status(400).json({message: 'Please fill all the fields'});
+        }
+
+        const user = await User.findOne({email});
+        if(!user) {
+            return res.status(401).json({message: 'Invalid email or password'});
+        }
+
+        const isPasswordCorrect = await user.matchPassword(password);
+        if(!isPasswordCorrect) {
+            return res.status(401).json({message: 'Invalid email or password'});
+        }
+
+        const token = jwt.sign(
+            {userId: user._id},
+            process.env.JWT_SECRET,
+            {expiresIn: '7d'}
+        )
+        res.cookie('jwt', token, {
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+            sameSite: 'strict', // Helps prevent CSRF attacks
+            secure: process.env.NODE_ENV === 'production' // Ensures the cookie is sent over HTTPS in production
+        });
+
+        res.status(200).json({success: true, user});
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).json({message: 'Internal server error'});
+    }
 }
 
+
 export const logout = (req,res)=> {
-    res.send('Logout Route')
+    try {
+        res.clearCookie('jwt');
+        res.status(200).json({success: true, message: 'Logged out successfully'});
+    } catch (error) {
+        console.error("Error during logout:", error);
+        res.status(500).json({message: 'Internal server error'});
+    }
 }
