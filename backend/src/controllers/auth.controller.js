@@ -114,3 +114,52 @@ export const logout = (req,res)=> {
         res.status(500).json({message: 'Internal server error'});
     }
 }
+
+
+export const onboard = async (req,res)=>{
+    try {
+        const userId = req.user._id;
+        const {fullName,bio,nativeLanguage, learningLanguage,location} = req.body;
+
+        if(!fullName || !bio || !nativeLanguage || !learningLanguage || !location) {
+            return res.status(400).json({
+                message: 'Please fill all the fields...',
+                missingFields: [
+                    !fullName && "fullName",
+                    !bio && "bio",
+                    !nativeLanguage && "nativeLanguage",
+                    !learningLanguage && "learningLanguage",
+                    !location && "location"
+                ].filter(Boolean) // Filter out undefined values
+            });
+        }
+        const updatedUser = await User.findByIdAndUpdate(userId, {
+            ...req.body,
+            isOnboarded: true
+        }, {new: true});
+
+        if(!updatedUser) {
+            return res.status(404).json({message: 'User not found'});
+        }
+
+        // Upsert user in Stream
+        try {
+            await upsertStreamUser({
+                id: updatedUser._id.toString(),
+                name: updatedUser.fullName,
+                image: updatedUser.profilePic || ''
+            });
+            console.log(`Stream user upserted successfully for user: ${updatedUser.fullName}`);
+            
+        } catch (error) {
+            console.error("Error upserting Stream user:", error);
+        }
+        
+
+        res.status(200).json({success: true, user: updatedUser});
+
+    } catch (error) {
+        console.error("Error during onboard:", error);
+        res.status(500).json({message: 'Internal server error'});
+    }
+}
