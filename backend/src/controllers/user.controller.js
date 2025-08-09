@@ -114,3 +114,39 @@ export async function sendFriednRequest(req,res){
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+export async function acceptFriednRequest(req, res) {
+    try {
+        const {id:requestId} = req.params;
+        const friendRequest = await FriendRequest.findById(requestId);
+        if (!friendRequest) {
+            return res.status(404).json({ message: "Friend request not found." });
+        }
+
+        if(friendRequest.recipient.toString() !== req.user.id) {
+            return res.status(403).json({ message: "You are not authorized to accept this friend request." });
+        }
+
+        friendRequest.status = "accepted";
+        await friendRequest.save();
+
+        await User.findByIdAndUpdate(
+            friendRequest.sender,
+            { $addToSet: { friends: req.user.id } },
+            { new: true }
+        );
+
+        await User.findByIdAndUpdate(
+            req.user.id,
+            { $addToSet: { friends: friendRequest.sender } },
+            { new: true } // return the updated version
+        );
+
+        res.status(200).json({ message: "Friend request accepted successfully." })
+        
+    } catch (error) {
+        console.error("Error accepting friend request:", error);
+        res.status(500).json({ message: 'Internal server error' });
+        
+    }
+}
