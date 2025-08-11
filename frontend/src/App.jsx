@@ -26,8 +26,20 @@ const App = () => {
     <div className="h-screen" data-theme="night">
       <Routes>
 
-        <Route path="/login" element={!isAuthenticated ? <LoginPage /> : <Navigate to={'/'} />} />
-        <Route path="/signup" element={!isAuthenticated ? <SignUpPage /> : <Navigate to={'/'} />} />
+        <Route 
+          path="/signup" 
+          element={
+            !isAuthenticated ? <SignUpPage /> : <Navigate to={isOnboarded?'/':'/onboarding'} />
+          } 
+        />
+
+        <Route 
+          path="/login" 
+          element={
+            !isAuthenticated ? <LoginPage /> : <Navigate to={isOnboarded?'/':'/onboarding'} />
+          } 
+        />
+
 
         <Route 
           path="/" 
