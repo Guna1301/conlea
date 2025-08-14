@@ -19,6 +19,7 @@ export const getAuthUser = async ()=>{
     try {
         const res = await axiosInstance.get('/auth/me');
         return res.data;
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
         return null
     }
