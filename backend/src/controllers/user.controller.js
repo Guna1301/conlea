@@ -10,7 +10,7 @@ export async function getRecommendedUsers(req, res) {
         let recommendedUsers = await User.aggregate([
             {
                 $match: {
-                    _id: { $nin: [currentUserId, ...friendsList] }, // Exclude self + friends
+                    _id: { $nin: [currentUserId, ...friendsList] },
                     isOnboarded: true,
                     $or: [
                         { nativeLanguage: currentUser.learningLanguage },
