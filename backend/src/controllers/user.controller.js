@@ -3,15 +3,14 @@ import User from "../models/User.js";
 
 export async function getRecommendedUsers(req, res) {
     try {
-        const currentUserId = req.user.id;
+        const currentUserId = req.user._id;
         const currentUser = req.user;
         const friendsList = currentUser.friends || [];
 
         let recommendedUsers = await User.aggregate([
             {
                 $match: {
-                    _id: { $ne: currentUserId },
-                    _id: { $nin: friendsList },
+                    _id: { $nin: [currentUserId, ...friendsList] }, // Exclude self + friends
                     isOnboarded: true,
                     $or: [
                         { nativeLanguage: currentUser.learningLanguage },
@@ -35,13 +34,17 @@ export async function getRecommendedUsers(req, res) {
         ]);
 
         if (recommendedUsers.length < 10) {
+            const excludeIds = [
+                currentUserId,
+                ...friendsList,
+                ...recommendedUsers.map(u => u._id)
+            ];
+
             const extraUsers = await User.aggregate([
                 {
                     $match: {
-                        _id: { $ne: currentUserId },
-                        _id: { $nin: friendsList },
-                        isOnboarded: true,
-                        _id: { $nin: recommendedUsers.map(u => u._id) }
+                        _id: { $nin: excludeIds },
+                        isOnboarded: true
                     }
                 },
                 { $sample: { size: 10 - recommendedUsers.length } },
@@ -49,8 +52,10 @@ export async function getRecommendedUsers(req, res) {
             ]);
 
             recommendedUsers = [...recommendedUsers, ...extraUsers];
-        }
+}
 
+        // console.log(friendsList)
+        // console.log(recommendedUsers)
         res.status(200).json( recommendedUsers );
     } catch (error) {
         console.error("Error fetching recommended users:", error);
