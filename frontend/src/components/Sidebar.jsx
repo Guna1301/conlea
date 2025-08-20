@@ -9,16 +9,8 @@ const Sidebar = () => {
     const currentPath = location.pathname;
 
   return (
-    <aside className='w-64 bg-base-200 border-r border-base-300 hidden lg:flex flex-col h-screen sticky top-0'>
-        <div className='p-5 border-b border-base-300'>
-            <Link to={'/'} className='flex items-center gap-2.5'>
-                <Languages className='size-9 text-primary'/>
-                <span className='text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r
-                from-primary to-secondary tracking-wider'>
-                    Conlea
-                </span>
-            </Link>
-        </div>
+    <aside className='w-64 bg-base-200 hidden lg:flex flex-col h-screen sticky top-0'>
+        
 
         <nav className='flex-1 p-4 space-y-1'>
             <Link
