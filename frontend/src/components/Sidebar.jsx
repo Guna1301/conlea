@@ -9,7 +9,7 @@ const Sidebar = () => {
     const currentPath = location.pathname;
 
   return (
-    <aside className='w-64 bg-base-200 hidden lg:flex flex-col h-screen sticky top-0'>
+    <aside className='w-64 bg-base-200 hidden lg:flex flex-col h-[calc(100vh-64px)] sticky top-[64px] border-none shadow-none'>
         
 
         <nav className='flex-1 p-4 space-y-1'>
@@ -45,7 +45,7 @@ const Sidebar = () => {
         </nav>
 
           {/* user profile section  */}
-          <div className='p-4 border-t border-base-300 mt-auto'>
+          <div className='p-4 mt-auto'>
                 <div className='flex items-center gap-3'>
                     <div className='avatar'>
                         <div className='w-10 rounded-full'>
