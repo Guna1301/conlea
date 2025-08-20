@@ -20,11 +20,6 @@ export const THEMES = [
     colors: ["#1f1d1d", "#3ebc96", "#70c217", "#e2e8f0"],
   },
   {
-    name: "bumblebee",
-    label: "Bumblebee",
-    colors: ["#ffffff", "#f8e36f", "#f0d50c", "#1c1917"],
-  },
-  {
     name: "emerald",
     label: "Emerald",
     colors: ["#ffffff", "#66cc8a", "#3b82f6", "#1e3a8a"],
@@ -35,19 +30,9 @@ export const THEMES = [
     colors: ["#ffffff", "#4b6bfb", "#7b92b2", "#1d232a"],
   },
   {
-    name: "synthwave",
-    label: "Synthwave",
-    colors: ["#2d1b69", "#e779c1", "#58c7f3", "#f8f8f2"],
-  },
-  {
     name: "retro",
     label: "Retro",
     colors: ["#e4d8b4", "#ea6962", "#6aaa64", "#282425"],
-  },
-  {
-    name: "cyberpunk",
-    label: "Cyberpunk",
-    colors: ["#ffee00", "#ff7598", "#75d1f0", "#1a103d"],
   },
   {
     name: "valentine",
@@ -63,12 +48,6 @@ export const THEMES = [
     name: "garden",
     label: "Garden",
     colors: ["#e9e7e7", "#ec4899", "#16a34a", "#374151"],
-  },
-
-  {
-    name: "aqua",
-    label: "Aqua",
-    colors: ["#193549", "#4cd4e3", "#9059ff", "#f8d766"],
   },
   {
     name: "lofi",

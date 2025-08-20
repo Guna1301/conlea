@@ -8,7 +8,7 @@ const Layout = ({ children, showSidebar = false }) => {
 
       <div className="flex flex-1">
         {showSidebar && (
-          <div className="">
+          <div>
             <Sidebar />
           </div>
         )}
