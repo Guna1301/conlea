@@ -45,10 +45,14 @@ const Navbar = () => {
                 
                 <ThemeSelector/>
 
-                <div className="avatar">
-                    <div className="w-9 rounded-full">
-                        <img src={authUser?.profilePic} alt="User Avatar" rel="noreferrer" />
-                    </div>
+                <div className="avatar gap-2">
+                    <Link to={'/profile'}>
+                    <button className='btn btn-ghost btn-circle'>
+                        <div className="w-9 rounded-full">
+                            <img src={authUser?.profilePic} alt="User Avatar" rel="noreferrer" />
+                        </div>
+                    </button>
+                    </Link>
                 </div>
 
                 {/* logout */}

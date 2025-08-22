@@ -25,11 +25,6 @@ export const THEMES = [
     colors: ["#ffffff", "#66cc8a", "#3b82f6", "#1e3a8a"],
   },
   {
-    name: "corporate",
-    label: "Corporate",
-    colors: ["#ffffff", "#4b6bfb", "#7b92b2", "#1d232a"],
-  },
-  {
     name: "retro",
     label: "Retro",
     colors: ["#e4d8b4", "#ea6962", "#6aaa64", "#282425"],
@@ -50,11 +45,6 @@ export const THEMES = [
     colors: ["#e9e7e7", "#ec4899", "#16a34a", "#374151"],
   },
   {
-    name: "lofi",
-    label: "Lofi",
-    colors: ["#0f0f0f", "#1a1919", "#232323", "#2c2c2c"],
-  },
-  {
     name: "pastel",
     label: "Pastel",
     colors: ["#f7f3f5", "#d1c1d7", "#a1e3d8", "#4a98f1"],
@@ -68,11 +58,6 @@ export const THEMES = [
     name: "wireframe",
     label: "Wireframe",
     colors: ["#e6e6e6", "#b3b3b3", "#b3b3b3", "#888888"],
-  },
-  {
-    name: "black",
-    label: "Black",
-    colors: ["#000000", "#191919", "#313131", "#4a4a4a"],
   },
   {
     name: "luxury",
@@ -93,11 +78,6 @@ export const THEMES = [
     name: "autumn",
     label: "Autumn",
     colors: ["#f2f2f2", "#8c1f11", "#f28c18", "#6f4930"],
-  },
-  {
-    name: "business",
-    label: "Business",
-    colors: ["#f5f5f5", "#1e40af", "#3b82f6", "#f97316"],
   },
   {
     name: "acid",
@@ -128,11 +108,6 @@ export const THEMES = [
     name: "dim",
     label: "Dim",
     colors: ["#1c1c27", "#10b981", "#ff5a5f", "#0f172a"],
-  },
-  {
-    name: "nord",
-    label: "Nord",
-    colors: ["#eceff4", "#5e81ac", "#81a1c1", "#3b4252"],
   },
   {
     name: "sunset",
