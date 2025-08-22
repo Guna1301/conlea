@@ -2,6 +2,8 @@ import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import { acceptFriendRequest, getFriendRequests } from '../lib/api';
 import {BellIcon, ClockIcon, MessageSquareIcon, UserCheckIcon} from 'lucide-react'
 import NoNotificationsFound from '../components/NoNotificationsFound';
+import { Link } from 'react-router';
+import { formatNotificationTime } from '../lib/utils';
 
 const NotificationsPage = () => {
   const queryClinet = useQueryClient();
@@ -25,7 +27,7 @@ const NotificationsPage = () => {
   return (
     <div className='p-4 sm:p-6 lg:p-8'>
       <div className='container mx-auto max-w-4xl space-y-8'>
-        <h1 className='text-2xl sm:text-3xl font-bold tracking-tight mb-6'>Notification</h1>
+        <h1 className='text-2xl sm:text-3xl font-bold tracking-tight mb-6'>Notifications</h1>
 
         {
           isLoading ? (
@@ -110,12 +112,13 @@ const NotificationsPage = () => {
                               </p>
                               <p className="text-xs flex items-center opacity-70">
                                 <ClockIcon className="h-3 w-3 mr-1" />
-                                Recently
+                                {formatNotificationTime(notification.createdAt)}
                               </p>
                             </div>
-                            <div className="badge badge-success">
-                              <MessageSquareIcon className="h-3 w-3 mr-1" />
-                              New Friend
+                            <div className="">
+                              <Link to={`/chat/${notification.recipient._id}`} className="btn btn-outline w-full">
+                                  Message
+                              </Link>
                             </div>
                           </div>
                         </div>
