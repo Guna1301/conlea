@@ -1,15 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {Languages} from 'lucide-react'
 import { Link } from 'react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { signup } from '../lib/api';
+import { PRIVACY_POLICY, TERMS_OF_SERVICE } from '../constants/legal';
 
 const SignUpPage = () => {
-  const [signupData, setSignupData] = React.useState({
+  const [signupData, setSignupData] = useState({
     fullName: '',
     email: '',
     password: '',
   });
+  const [showTerms, setShowTerms] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
+
 
   const queryClient = useQueryClient();
 
@@ -99,11 +103,42 @@ const SignUpPage = () => {
                       <input type='checkbox' className='checkbox checkbox-sm' required/>
                       <span className='text-xs leading-tight'>
                         I agree to the{" "}
-                        <span className='text-primary hover:underline'>tearms of service</span> and{" "}
-                        <span className='text-primary hover:underline'>privacy policy</span>
+                        <span
+                          className='text-primary hover:underline cursor-pointer'
+                          onClick={() => setShowTerms(true)}
+                        >
+                          Terms of Service
+                        </span>{" "}and{" "}
+                        <span
+                          className='text-primary hover:underline cursor-pointer'
+                          onClick={() => setShowPrivacy(true)}
+                        >
+                          Privacy Policy
+                        </span>
                       </span>
                     </label>
                   </div>
+                  {showTerms && (
+                    <Modal title='Terms of Service' onClose={() => setShowTerms(false)}>
+                      {TERMS_OF_SERVICE.map((section, idx) => (
+                        <div key={idx} className='mb-4'>
+                          <h3 className='font-semibold'>{section.title}</h3>
+                          <p className='text-sm opacity-80'>{section.content}</p>
+                        </div>
+                      ))}
+                    </Modal>
+                  )}
+
+                  {showPrivacy && (
+                    <Modal title='Privacy Policy' onClose={() => setShowPrivacy(false)}>
+                      {PRIVACY_POLICY.map((section, idx) => (
+                        <div key={idx} className='mb-4'>
+                          <h3 className='font-semibold'>{section.title}</h3>
+                          <p className='text-sm opacity-80'>{section.content}</p>
+                        </div>
+                      ))}
+                    </Modal>
+                  )}
                 </div>
                 <button className='btn btn-primary w-full' type='submit'>
                   {isPending ? (
@@ -149,3 +184,18 @@ const SignUpPage = () => {
 }
   
 export default SignUpPage
+
+const Modal = ({ title, children, onClose }) => (
+  <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
+    <div className='bg-base-300 rounded-lg shadow-lg max-w-lg w-full p-6 relative'>
+      <h2 className='text-lg font-bold mb-4'>{title}</h2>
+      <div className='overflow-y-auto max-h-96'>{children}</div>
+      <button
+        className='absolute top-2 right-2 text-gray-500 hover:text-gray-700'
+        onClick={onClose}
+      >
+        ✕
+      </button>
+    </div>
+  </div>
+);
