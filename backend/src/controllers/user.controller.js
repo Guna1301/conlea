@@ -68,7 +68,7 @@ export async function getMyFriends(req, res) {
     try {
         const user = await User.findById(req.user.id)
             .select('friends')
-            .populate('friends', 'fullName profilePic nativeLanguage learningLanguage location');
+            .populate('friends', 'fullName profilePic nativeLanguage learningLanguage location bio');
         res.status(200).json(user.friends );
     } catch (error) {
         console.error("Error fetching friends:", error);
@@ -182,6 +182,45 @@ export async function rejectFriendRequest(req, res) {
 }
 
 
+export async function removeFriend(req, res) {
+    try {
+        const myId = req.user.id;
+        const { id: friendId } = req.params;
+
+        const user = await User.findById(myId);
+        if (!user.friends.includes(friendId)) {
+            return res.status(400).json({ message: "This user is not in your friends list." });
+        }
+
+        await User.findByIdAndUpdate(
+            myId,
+            { $pull: { friends: friendId } },
+            { new: true }
+        );
+
+        await User.findByIdAndUpdate(
+            friendId,
+            { $pull: { friends: myId } },
+            { new: true }
+        );
+
+        await FriendRequest.deleteMany({
+            $or: [
+                { sender: myId, recipient: friendId },
+                { sender: friendId, recipient: myId }
+            ]
+        });
+
+        res.status(200).json({ message: "Friend removed successfully." });
+
+    } catch (error) {
+        console.error("Error removing friend:", error);
+        res.status(500).json({ message: 'Internal server error' });
+        
+    }
+}
+
+
 export async function getFriendRequests(req, res) {
     try {
         const incomingReqs = await FriendRequest.find(
@@ -214,6 +253,21 @@ export async function getOutgoingFriendRequests(req, res) {
         res.status(200).json(outgoingRequests);
     } catch (error) {
         console.error("Error fetching outgoing friend requests:", error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+
+export async function getUserProfile(req, res) {
+    try {
+        const { id:userId } = req.params;
+        const user = await User.findById(userId).select('-password -__v -email -isOnboarded -createdAt -updatedAt');
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        console.error("Error fetching user profile:", error);
         res.status(500).json({ message: 'Internal server error' });
     }
 }

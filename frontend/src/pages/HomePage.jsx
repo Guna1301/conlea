@@ -4,9 +4,10 @@ import { getOutgoingFriendsReqs, getRecommendedUsers, getUserFriends, sendFriend
 import {Link} from 'react-router'
 import {CheckCircleIcon, MapPinIcon, UserPlusIcon, UsersIcon} from 'lucide-react'
 
-import FriendCard, { getLanguageFlag } from '../components/FriendCard';
+import FriendCard from '../components/FriendCard';
 import NoFriendsFound from '../components/NoFriendsFound';
 import { capitialize } from '../lib/utils';
+import { GetLanguageFlag } from '../lib/GetLanguageFlag';
 
 const HomePage = () => {
   const queryClient = useQueryClient();
@@ -46,7 +47,7 @@ const HomePage = () => {
     <div className='bg-base-100 rounded-lg p-4 sm:p-6 lg:p-8'>
       <div className='container mx-auto space-y-10'>
         <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4'>
-          <h2 className='text-2xl sm:text-3xl font-bold tracking-tight'>Start learning from your connections</h2>
+          <h2 className='text-2xl sm:text-3xl font-bold tracking-tight'>Your connections</h2>
           <Link to={'/notifications'} className='btn btn-outline btn-sm'>
             <UsersIcon className='mr-2 size-4'/>
             Friend Requests
@@ -126,11 +127,11 @@ const HomePage = () => {
                            {/* Languages with flags */}
                           <div className="flex flex-wrap gap-1.5">
                             <span className="badge badge-secondary py-3 items-center">
-                              {getLanguageFlag(user.nativeLanguage)}
+                              {GetLanguageFlag(user.nativeLanguage)}
                               Native: {capitialize(user.nativeLanguage)}
                             </span>
                             <span className="badge badge-outline py-3 items-center">
-                              {getLanguageFlag(user.learningLanguage)}
+                              {GetLanguageFlag(user.learningLanguage)}
                               Learning: {capitialize(user.learningLanguage)}
                             </span>
                           </div>

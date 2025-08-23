@@ -1,7 +1,7 @@
 import {useQuery} from '@tanstack/react-query'
 import { getUserFriends } from '../lib/api'
 import NoFriendsFound from '../components/NoFriendsFound'
-import FriendCard from '../components/FriendCard'
+import FriendsPageCard from '../components/FriendsPageCard'
 
 const FriendsPage = () => {
   const {data:friends=[],isLoading:loadingFriends }= useQuery({
@@ -23,10 +23,10 @@ const FriendsPage = () => {
           ):friends.length === 0 ?(
             <NoFriendsFound/>
           ):(
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
+            <div className='space-y-4 gap-4'>
               {
                 friends.map((friend) =>(
-                  <FriendCard key={friend._id} friend={friend}/>
+                  <FriendsPageCard key={friend._id} friend={friend}/>
                 ))
               }
             </div>
