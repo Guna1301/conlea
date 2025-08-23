@@ -1,7 +1,21 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { GetLanguageFlag } from "../lib/GetLanguageFlag"
+import { removeFriend } from "../lib/api"
 
 
 const FriendsPageCard = ({friend}) => {
+
+  console.log(friend)
+  const queryClinet = useQueryClient()
+
+  const {mutate:removeFriendMutation, isPending} = useMutation({
+    mutationFn:removeFriend,
+    onSuccess : ()=>{
+      queryClinet.invalidateQueries(['friendRequests'])
+      queryClinet.invalidateQueries(['friends'])
+    }
+  })
+
   return (
     <div className="card bg-base-300 hover:shadow-md transition-shadow w-full">
         <div className="card-body p-4 flex flex-row items-center justify-between">
@@ -25,9 +39,14 @@ const FriendsPageCard = ({friend}) => {
             </div>
             </div>
 
-            {/* actions */}
             <div className="ml-4">
-            <button className="btn btn-error btn-sm">Remove Friend</button>
+              <button
+                className='btn btn-error btn-sm'
+                onClick={()=>removeFriendMutation(friend._id)}
+                disabled= {isPending}
+              >
+                Remove Friend
+              </button>
             </div>
         </div>
     </div>
@@ -36,23 +55,3 @@ const FriendsPageCard = ({friend}) => {
 }
 
 export default FriendsPageCard
-
-// export const getLanguageFlag = (language)=>{
-//     if(!language)return null
-
-//     const langLower = language.toLowerCase()
-//     const countryCode = LANGUAGE_TO_FLAG[langLower]
-
-//     if(countryCode){
-//         return (
-//             <img
-//                 src= {`https://flagcdn.com/24x18/${countryCode}.png`}
-//                 alt={`${countryCode}`}
-//                 className="h-3 mr-1 inline-block"
-//             />
-//         )
-//     }
-//     return null;
-// }
-
-

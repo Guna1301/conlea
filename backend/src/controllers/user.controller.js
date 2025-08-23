@@ -68,7 +68,7 @@ export async function getMyFriends(req, res) {
     try {
         const user = await User.findById(req.user.id)
             .select('friends')
-            .populate('friends', 'fullName profilePic nativeLanguage learningLanguage location bio');
+            .populate('friends', 'fullName profilePic nativeLanguage learningLanguage location bio _id');
         res.status(200).json(user.friends );
     } catch (error) {
         console.error("Error fetching friends:", error);
@@ -188,6 +188,7 @@ export async function removeFriend(req, res) {
         const { id: friendId } = req.params;
 
         const user = await User.findById(myId);
+        console.log(friendId)
         if (!user.friends.includes(friendId)) {
             return res.status(400).json({ message: "This user is not in your friends list." });
         }
