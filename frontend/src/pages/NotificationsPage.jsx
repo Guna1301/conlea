@@ -1,5 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
-import { acceptFriendRequest, getFriendRequests } from '../lib/api';
+import { acceptFriendRequest, getFriendRequests, rejectFriendRequest } from '../lib/api';
 import {BellIcon, ClockIcon, MessageSquareIcon, UserCheckIcon} from 'lucide-react'
 import NoNotificationsFound from '../components/NoNotificationsFound';
 import { Link } from 'react-router';
@@ -15,6 +15,14 @@ const NotificationsPage = () => {
 
   const {mutate:acceptRequestMutation, isPending} = useMutation({
     mutationFn:acceptFriendRequest,
+    onSuccess : ()=>{
+      queryClinet.invalidateQueries(['friendRequests'])
+      queryClinet.invalidateQueries(['friends'])
+    }
+  })
+
+  const {mutate:rejectRequestMutation, isRejectPending} = useMutation({
+    mutationFn:rejectFriendRequest,
     onSuccess : ()=>{
       queryClinet.invalidateQueries(['friendRequests'])
       queryClinet.invalidateQueries(['friends'])
@@ -69,13 +77,23 @@ const NotificationsPage = () => {
                                   </div>
                                 </div>
 
-                                <button
-                                  className='btn btn-primary btn-sm'
-                                  onClick={()=>acceptRequestMutation(request._id)}
-                                  disabled= {isPending}
-                                >
-                                  Accept
-                                </button>
+                                <div className='flex gap-2'>
+                                  <button
+                                    className='btn btn-primary btn-sm'
+                                    onClick={()=>acceptRequestMutation(request._id)}
+                                    disabled= {isPending}
+                                  >
+                                    Accept
+                                  </button>
+
+                                  <button
+                                    className='btn btn-error btn-sm'
+                                    onClick={()=>rejectRequestMutation(request._id)}
+                                    disabled= {isRejectPending}
+                                  >
+                                    Reject
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           </div>

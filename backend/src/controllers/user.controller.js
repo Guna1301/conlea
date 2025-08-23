@@ -120,6 +120,7 @@ export async function sendFriednRequest(req,res){
     }
 }
 
+
 export async function acceptFriednRequest(req, res) {
     try {
         const {id:requestId} = req.params;
@@ -153,6 +154,30 @@ export async function acceptFriednRequest(req, res) {
         console.error("Error accepting friend request:", error);
         res.status(500).json({ message: 'Internal server error' });
         
+    }
+}
+
+
+export async function rejectFriendRequest(req, res) {
+    try {
+        const { id: requestId } = req.params;
+        const friendRequest = await FriendRequest.findById(requestId);
+
+        if (!friendRequest) {
+            return res.status(404).json({ message: "Friend request not found." });
+        }
+
+        if (friendRequest.recipient.toString() !== req.user.id) {
+            return res.status(403).json({ message: "You are not authorized to reject this friend request." });
+        }
+
+        await FriendRequest.findByIdAndDelete(requestId);
+
+        res.status(200).json({ message: "Friend request rejected successfully." });
+
+    } catch (error) {
+        console.error("Error rejecting friend request:", error);
+        res.status(500).json({ message: "Internal server error" });
     }
 }
 
