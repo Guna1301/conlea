@@ -70,19 +70,9 @@ export const THEMES = [
     colors: ["#282a36", "#ff79c6", "#bd93f9", "#f8f8f2"],
   },
   {
-    name: "cmyk",
-    label: "CMYK",
-    colors: ["#f0f0f0", "#0891b2", "#ec4899", "#facc15"],
-  },
-  {
     name: "autumn",
     label: "Autumn",
     colors: ["#f2f2f2", "#8c1f11", "#f28c18", "#6f4930"],
-  },
-  {
-    name: "acid",
-    label: "Acid",
-    colors: ["#110e0e", "#ff00f2", "#ff7a00", "#99ff01"],
   },
   {
     name: "lemonade",
