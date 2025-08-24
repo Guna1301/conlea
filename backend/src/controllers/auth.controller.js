@@ -52,14 +52,15 @@ export const signup = async (req,res)=> {
             {expiresIn: '7d'}
         )
         const isProd = process.env.NODE_ENV === 'production';
+
         res.cookie('jwt', token, {
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-            httpOnly: true,
-            secure: isProd,             // HTTPS only in production
-            sameSite: isProd ? 'none' : 'lax', // 'none' for cross-site cookies in production
-            domain: 'conlea-backend.onrender.com',
-            path: '/'
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: isProd,             // HTTPS only in production
+        sameSite: isProd ? 'none' : 'lax', // allow cross-site in prod
+        path: '/'                   // always send for all paths
         });
+
 
         res.status(201).json({success: true, user: newUser});
 
@@ -93,14 +94,15 @@ export const login = async (req,res)=> {
             {expiresIn: '7d'}
         )
         const isProd = process.env.NODE_ENV === 'production';
+
         res.cookie('jwt', token, {
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-            httpOnly: true,
-            secure: isProd,             // HTTPS only in production
-            sameSite: isProd ? 'none' : 'lax', // 'none' for cross-site cookies in production
-            domain: 'conlea-backend.onrender.com',
-            path: '/'
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: isProd,             // HTTPS only in production
+        sameSite: isProd ? 'none' : 'lax', // allow cross-site in prod
+        path: '/'                   // always send for all paths
         });
+
         res.status(200).json({success: true, user});
     } catch (error) {
         console.error("Error during login:", error);
