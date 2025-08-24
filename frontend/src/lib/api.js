@@ -15,15 +15,17 @@ export const logout = async ()=>{
     return res.data;
 }
 
-export const getAuthUser = async ()=>{
+export const getAuthUser = async () => {
     try {
-        const res = await axiosInstance.get('/auth/me');
+        const res = await axiosInstance.get('/auth/me', {
+            withCredentials: true // ensure cookie is sent
+        });
         return res.data;
     // eslint-disable-next-line no-unused-vars
     } catch (error) {
-        return null
+        return null;
     }
-}
+};
 
 export const completeOnboarding = async (userData) =>{
     const res = await axiosInstance.post('/auth/onboarding', userData);
