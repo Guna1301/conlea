@@ -15,8 +15,8 @@ const PORT = process.env.PORT || 5001;
 
 app.use(cors({
   origin: [
-    'http://localhost:5173',     // dev frontend
-    'https://conlea.vercel.app'  // prod frontend
+    'http://localhost:5173', 
+    'https://conlea.vercel.app'
   ],
   credentials: true
 }));
