@@ -30,7 +30,7 @@ export async function getRecommendedUsers(req, res) {
             },
             { $sort: { matchScore: -1, updatedAt: -1 } },
             { $limit: 10 },
-            { $project: { password: 0, __v: 0 } }
+            { $project: { password: 0, __v: 0, email:0 } }
         ]);
 
         if (recommendedUsers.length < 10) {
@@ -48,7 +48,7 @@ export async function getRecommendedUsers(req, res) {
                     }
                 },
                 { $sample: { size: 10 - recommendedUsers.length } },
-                { $project: { password: 0, __v: 0 } }
+                { $project: { password: 0, __v: 0, email:0 } }
             ]);
 
             recommendedUsers = [...recommendedUsers, ...extraUsers];
