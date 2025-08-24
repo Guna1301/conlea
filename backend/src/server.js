@@ -13,11 +13,19 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 5001
 
-app.use(cors({
-  origin: ['http://localhost:5173', 'https://conlea.vercel.app'],
-  credentials: true
-}));
+const allowedOrigins = ['http://localhost:5173', 'https://conlea.vercel.app'];
 
+app.use(cors({
+    origin: function(origin, callback){
+        if(!origin) return callback(null, true); // allow tools like Postman
+        if(allowedOrigins.includes(origin)){
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
+}));
 
 app.use(express.json())
 app.use(cookieParser())

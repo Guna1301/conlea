@@ -51,13 +51,13 @@ export const signup = async (req,res)=> {
             process.env.JWT_SECRET,
             {expiresIn: '7d'}
         )
-
-        res.cookie('jwt',token,{
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-            httpOnly: true,// Prevents client-side JavaScript from accessing the cookie
-            sameSite : 'none', // Helps prevent CSRF attacks
-            secure: process.env.NODE_ENV === 'production' // Ensures the cookie is sent over HTTPS in production
-        })
+        const isProd = process.env.NODE_ENV === 'production';
+        res.cookie('jwt', token, {
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            httpOnly: true,
+            secure: isProd,             // HTTPS only in production
+            sameSite: isProd ? 'none' : 'lax' // 'none' for cross-site cookies in production
+        });
 
         res.status(201).json({success: true, user: newUser});
 
@@ -90,13 +90,13 @@ export const login = async (req,res)=> {
             process.env.JWT_SECRET,
             {expiresIn: '7d'}
         )
+        const isProd = process.env.NODE_ENV === 'production';
         res.cookie('jwt', token, {
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-            httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-            sameSite: 'none', // Helps prevent CSRF attacks
-            secure: process.env.NODE_ENV === 'production' // Ensures the cookie is sent over HTTPS in production
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            httpOnly: true,
+            secure: isProd,             // HTTPS only in production
+            sameSite: isProd ? 'none' : 'lax' // 'none' for cross-site cookies in production
         });
-
         res.status(200).json({success: true, user});
     } catch (error) {
         console.error("Error during login:", error);
