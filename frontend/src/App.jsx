@@ -10,6 +10,7 @@ import NotificationsPage from "./pages/NotificationsPage"
 import FriendsPage from "./pages/FriendsPage"
 
 import { Toaster } from "react-hot-toast"
+import { Analytics } from '@vercel/analytics/react';
 
 import PageLoader from "./components/PageLoader.jsx"
 import useAuthUser from "./hooks/useAuthUser.js"
@@ -30,6 +31,7 @@ const App = () => {
 
   return (
     <div className="h-screen" data-theme={theme}>
+      <Analytics />
       <Routes>
 
         <Route 
