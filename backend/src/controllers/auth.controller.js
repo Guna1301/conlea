@@ -56,7 +56,8 @@ export const signup = async (req,res)=> {
             maxAge: 7 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             secure: isProd,             // HTTPS only in production
-            sameSite: isProd ? 'none' : 'lax' // 'none' for cross-site cookies in production
+            sameSite: isProd ? 'none' : 'lax', // 'none' for cross-site cookies in production
+            domain: isProd ? 'conlea-backend.onrender.com' : undefined
         });
 
         res.status(201).json({success: true, user: newUser});
@@ -95,7 +96,8 @@ export const login = async (req,res)=> {
             maxAge: 7 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             secure: isProd,             // HTTPS only in production
-            sameSite: isProd ? 'none' : 'lax' // 'none' for cross-site cookies in production
+            sameSite: isProd ? 'none' : 'lax', // 'none' for cross-site cookies in production
+            domain: isProd ? 'conlea-backend.onrender.com' : undefined
         });
         res.status(200).json({success: true, user});
     } catch (error) {
